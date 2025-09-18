@@ -1,13 +1,16 @@
+import { AboutSection } from "@/components/about";
 import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
-import PremiumHeroSection from "@/components/hero-section";
-import Image from "next/image";
+import Header from "@/components/header";
+import { HeroSection } from "@/components/hero-section";
+import ManzilAgroRoadmap from "@/components/roadmap";
 
 export default function Home() {
   return (
     <div>
       <Header />
-      <PremiumHeroSection />
+      <HeroSection />
+      <AboutSection />
+      <ManzilAgroRoadmap />
       <Footer />
     </div>
   );

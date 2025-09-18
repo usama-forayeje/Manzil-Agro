@@ -1,429 +1,280 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Leaf,
-  Star,
-  Heart,
-  Shield,
-} from "lucide-react";
+import { ArrowRight, Play, Sparkles, Leaf, Star } from 'lucide-react'
+import { useLanguageStore } from "@/store/useLanguageStore";
+import React, { useEffect, useState } from "react";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "swiper/css";
+import Header from "./header";
 
-export default function PremiumHeroSection() {
-  const [currentShape, setCurrentShape] = useState(0);
+export function HeroSection() {
+  const { t } = useLanguageStore();
 
-  const shapes = [
-    {
-      id: 1,
-      clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)",
-      image:
-        "https://images.pexels.com/photos/2886937/pexels-photo-2886937.jpeg?auto=compress&cs=tinysrgb&w=600",
-      title: "আধুনিক কৃষি",
-      gradient: "from-emerald-500 via-green-600 to-emerald-700",
-    },
-    {
-      id: 2,
-      clipPath:
-        "polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)",
-      image:
-        "https://images.pexels.com/photos/1450360/pexels-photo-1450360.jpeg?auto=compress&cs=tinysrgb&w=600",
-      title: "হালাল রিসোর্ট",
-      gradient: "from-amber-500 via-orange-500 to-red-500",
-    },
-    {
-      id: 3,
-      clipPath:
-        "polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)",
-      image:
-        "https://images.pexels.com/photos/1435895/pexels-photo-1435895.jpeg?auto=compress&cs=tinysrgb&w=600",
-      title: "ফল বাগান",
-      gradient: "from-yellow-400 via-amber-500 to-orange-600",
-    },
-    {
-      id: 4,
-      clipPath: "circle(50% at 50% 50%)",
-      image:
-        "https://images.pexels.com/photos/7457011/pexels-photo-7457011.jpeg",
-      title: "সম্প্রদায়",
-      gradient: "from-teal-400 via-emerald-500 to-green-600",
-    },
-    {
-      id: 5,
-      clipPath:
-        "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
-      image:
-        "https://images.pexels.com/photos/1870376/pexels-photo-1870376.jpeg?auto=compress&cs=tinysrgb&w=600",
-      title: "লাইফস্টাইল ভিলেজ",
-      gradient: "from-purple-500 via-pink-500 to-rose-500",
-    },
+  return (
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-green-50 to-lime-50 dark:from-gray-900 dark:via-green-900/20 dark:to-emerald-900/20">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fillRule=\'evenodd\'%3E%3Cg fill=\'%2334d399\' fillOpacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40"></div>
+      </div>
+
+      <ParticleBackground />
+      <Header />
+
+      {/* Main Content */}
+      <section className="relative min-h-screen flex items-center pt-20 px-4">
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left Content */}
+            <div className="space-y-8 relative z-10">
+              <div className="inline-block animate-fadeInUp">
+                <span className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-emerald-100 to-green-100 dark:from-emerald-900/30 dark:to-green-900/30 text-emerald-700 dark:text-emerald-300 text-sm font-semibold shadow-lg backdrop-blur-sm border border-emerald-200/50 dark:border-emerald-700/50">
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  {t("hero.tagline")}
+                </span>
+              </div>
+
+              <h1 className="text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight animate-fadeInUp animation-delay-200">
+                <span className="bg-gradient-to-r from-emerald-600 via-green-600 to-lime-600 bg-clip-text text-transparent">
+                  {t("hero.title").split(" ").slice(0, 2).join(" ")}
+                </span>
+                <br />
+                <span className="text-gray-800 dark:text-gray-200">
+                  {t("hero.title").split(" ").slice(2).join(" ")}
+                </span>
+              </h1>
+
+              <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl animate-fadeInUp animation-delay-400">
+                {t("hero.description")}
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 animate-fadeInUp animation-delay-600">
+                <button className="group relative px-8 py-4 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden">
+                  <span className="relative z-10 flex items-center">
+                    {t("hero.cta.primary")}
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-green-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                </button>
+
+                <button className="group flex items-center px-8 py-4 rounded-full bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm text-gray-700 dark:text-gray-300 font-semibold border border-white/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-300">
+                  <Play className="mr-2 w-5 h-5" />
+                  {t("hero.cta.secondary")}
+                </button>
+              </div>
+
+              <StatsSection />
+            </div>
+
+            {/* Right Carousel */}
+            <div className="relative flex items-center justify-center animate-fadeInUp animation-delay-800">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 to-green-400/20 rounded-full blur-3xl transform scale-150"></div>
+              <EnhancedCarousel />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fadeInUp {
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .animation-delay-200 {
+          animation-delay: 0.2s;
+          opacity: 0;
+        }
+        
+        .animation-delay-400 {
+          animation-delay: 0.4s;
+          opacity: 0;
+        }
+        
+        .animation-delay-600 {
+          animation-delay: 0.6s;
+          opacity: 0;
+        }
+        
+        .animation-delay-800 {
+          animation-delay: 0.8s;
+          opacity: 0;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+// Particle Animation Component
+function ParticleBackground() {
+  const [particles, setParticles] = useState([]);
+
+  useEffect(() => {
+    const newParticles = Array.from({ length: 50 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 4 + 2,
+      speed: Math.random() * 2 + 1,
+      opacity: Math.random() * 0.5 + 0.2,
+    }));
+    setParticles(newParticles);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      {particles.map((particle) => (
+        <div
+          key={particle.id}
+          className="absolute rounded-full bg-white/30 dark:bg-emerald-400/20 animate-pulse"
+          style={{
+            left: `${particle.x}%`,
+            top: `${particle.y}%`,
+            width: `${particle.size}px`,
+            height: `${particle.size}px`,
+            opacity: particle.opacity,
+            animation: `float-${particle.id} ${particle.speed + 3}s ease-in-out infinite alternate`,
+          }}
+        />
+      ))}
+
+      {/* Floating leaves */}
+      <div className="absolute top-20 left-10 animate-bounce">
+        <Leaf className="w-8 h-8 text-emerald-300/40" />
+      </div>
+      <div className="absolute top-40 right-20 animate-pulse">
+        <Sparkles className="w-6 h-6 text-green-400/40" />
+      </div>
+      <div className="absolute bottom-40 left-20 animate-bounce delay-1000">
+        <Star className="w-5 h-5 text-emerald-400/40" />
+      </div>
+      <div className="absolute bottom-20 right-10 animate-pulse delay-500">
+        <Leaf className="w-7 h-7 text-green-300/40" />
+      </div>
+    </div>
+  );
+}
+
+// Enhanced Carousel Component
+function EnhancedCarousel() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const images = [
+    { src: "https://ik.imagekit.io/lgd2hue3i/Manzil-Agro/dragon.jpg?updatedAt=1758202649336", alt: "Modern hydroponic greenhouse with lush spinach" },
+    { src: "https://ik.imagekit.io/lgd2hue3i/Manzil-Agro/dragon-pic.jpg?updatedAt=1758202734453", alt: "Innovative vertical hydroponic garden indoors" },
+    { src: "https://ik.imagekit.io/lgd2hue3i/Manzil-Agro/bagan.jpg?updatedAt=1758202811288", alt: "Plants and greenhouses on fields aerial view" },
+    { src: "https://ik.imagekit.io/lgd2hue3i/Manzil-Agro/agro-sakhawat.jpg?updatedAt=1758203038867", alt: "Hydroponic system showcasing green plants" },
+    { src: "https://ik.imagekit.io/lgd2hue3i/Manzil-Agro/manzil-agro-mango.jpg?updatedAt=1758203121783", alt: "Greenhouse overhead irrigation" },
+    { src: "https://ik.imagekit.io/lgd2hue3i/Manzil-Agro/faruk-agro.jpg?updatedAt=1758202911139", alt: "Sustainable agriculture field at sunrise" },
   ];
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentShape((prev) => (prev + 1) % shapes.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, [shapes.length]);
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [images.length]);
 
-  const nextShape = () => {
-    setCurrentShape((prev) => (prev + 1) % shapes.length);
-  };
+  return (
+    <div className="relative w-full max-w-md mx-auto">
+      <div className="relative h-[500px] w-[350px] mx-auto">
+        {images.map((image, index) => {
+          const offset = (index - currentIndex + images.length) % images.length;
+          const isCenter = offset === 0;
+          const isLeft = offset === images.length - 1;
+          const isRight = offset === 1;
+          const isVisible = isCenter || isLeft || isRight;
 
-  const prevShape = () => {
-    setCurrentShape((prev) => (prev - 1 + shapes.length) % shapes.length);
-  };
+          return (
+            <div
+              key={index}
+              className={`absolute transition-all duration-700 ease-out rounded-3xl overflow-hidden shadow-2xl ${isVisible ? 'opacity-100' : 'opacity-0'
+                } ${isCenter
+                  ? 'z-30 scale-100 translate-x-0 rotate-0'
+                  : isLeft
+                    ? 'z-20 scale-75 -translate-x-16 -rotate-6 translate-y-8'
+                    : 'z-20 scale-75 translate-x-16 rotate-6 translate-y-8'
+                }`}
+              style={{
+                width: '300px',
+                height: '450px',
+                left: '50%',
+                top: '50%',
+                transform: `translate(-50%, -50%) ${isCenter
+                  ? 'scale(1) translateX(0) rotate(0deg)'
+                  : isLeft
+                    ? 'scale(0.75) translateX(-80px) rotate(-6deg) translateY(30px)'
+                    : 'scale(0.75) translateX(80px) rotate(6deg) translateY(30px)'
+                  }`,
+              }}
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+              {isCenter && (
+                <div className="absolute inset-0 ring-2 ring-emerald-400/50 rounded-3xl animate-pulse"></div>
+              )}
+            </div>
+          );
+        })}
+      </div>
 
-  const floatingElements = [
-    { icon: Leaf, color: "text-emerald-400", delay: 0, x: "10%", y: "20%" },
-    { icon: Star, color: "text-yellow-400", delay: 1, x: "85%", y: "15%" },
-    { icon: Heart, color: "text-rose-400", delay: 2, x: "15%", y: "70%" },
-    { icon: Shield, color: "text-blue-400", delay: 3, x: "80%", y: "75%" },
+      {/* Dots indicator */}
+      <div className="flex justify-center mt-6 space-x-2">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex
+              ? 'bg-emerald-400 w-8'
+              : 'bg-white/40 hover:bg-white/60'
+              }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Stats Component
+/* Stats Section */
+function StatsSection() {
+  const { t } = useLanguageStore();
+  const stats = [
+    { number: "50+", label: t("hero.stats.farms"), icon: "🌱" },
+    { number: "200+", label: t("hero.stats.farmers"), icon: "👨‍👩‍👧‍👦" },
+    { number: "150%", label: t("hero.stats.yield"), icon: "📈" },
   ];
 
   return (
-    <section className="relative w-full min-h-screen bg-gradient-to-br from-slate-900 via-emerald-900 to-green-800 overflow-hidden">
-      {/* Enhanced Background Elements */}
-      <div className="absolute inset-0">
-        {/* Animated Grid */}
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="h-full w-full bg-gradient-to-br from-emerald-500/20 to-transparent"
-            style={{
-              backgroundImage: `radial-gradient(circle at 25% 25%, rgba(16, 185, 129, 0.3) 0%, transparent 50%),
-                                  radial-gradient(circle at 75% 75%, rgba(245, 158, 11, 0.2) 0%, transparent 50%)`,
-            }}
-          ></div>
+    <div className="grid grid-cols-3 gap-6 mt-12">
+      {stats.map((stat, index) => (
+        <div
+          key={index}
+          className="text-center p-4 rounded-2xl bg-white/10 dark:bg-gray-800/10 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 hover:bg-white/20 dark:hover:bg-gray-800/20 transition-all duration-300 group"
+        >
+          <div className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-300">
+            {stat.icon}
+          </div>
+          <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">
+            {stat.number}
+          </div>
+          <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
         </div>
-
-        {/* Floating Icons */}
-        {floatingElements.map((element, index) => {
-          const IconComponent = element.icon;
-          return (
-            <motion.div
-              key={index}
-              className={`absolute ${element.color} opacity-20`}
-              style={{ left: element.x, top: element.y }}
-              animate={{
-                y: [-10, 10, -10],
-                rotate: [0, 180, 360],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: 6 + element.delay,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: element.delay,
-              }}
-            >
-              <IconComponent size={32} />
-            </motion.div>
-          );
-        })}
-
-        {/* Animated Orbs */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-emerald-400/30 to-green-600/30 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-gradient-to-r from-amber-400/30 to-orange-600/30 rounded-full blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.4, 0.7, 0.4],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2,
-          }}
-        />
-      </div>
-
-      {/* Main Content */}
-      <div className="relative z-10 container mx-auto px-6 flex flex-col lg:flex-row items-center justify-between min-h-screen py-12">
-        {/* Left Content */}
-        <div className="text-center lg:text-left max-w-2xl space-y-8 lg:mr-16">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500/20 to-green-600/20 border border-emerald-400/30 backdrop-blur-sm"
-          >
-            <motion.div
-              className="h-3 w-3 rounded-full bg-gradient-to-r from-emerald-400 to-green-500 mr-3"
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-            <span className="text-emerald-200 font-medium tracking-wide">
-              Sustainable Agro Lifestyle Project
-            </span>
-          </motion.div>
-
-          {/* Main Title */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4">
-              <motion.span
-                className="bg-gradient-to-r from-emerald-200 via-green-300 to-emerald-400 bg-clip-text text-transparent"
-                animate={{ backgroundPosition: ["0%", "100%", "0%"] }}
-                transition={{ duration: 5, repeat: Infinity }}
-              >
-                মানযিল
-              </motion.span>
-              <br />
-              <motion.span
-                className="bg-gradient-to-r from-amber-300 via-yellow-400 to-orange-400 bg-clip-text text-transparent"
-                animate={{ backgroundPosition: ["100%", "0%", "100%"] }}
-                transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
-              >
-                এগ্রো পার্ক
-              </motion.span>
-            </h1>
-          </motion.div>
-
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-xl sm:text-2xl text-gray-300 leading-relaxed font-light"
-          >
-            আধুনিক কৃষি, পরিবারিক লাইফস্টাইল ভিলেজ ও প্রাইভেট হালাল রিসোর্ট
-          </motion.p>
-
-          {/* Quote Card */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.6 }}
-            className="bg-gradient-to-r from-emerald-900/50 to-green-800/50 backdrop-blur-xl p-8 rounded-3xl border border-emerald-500/20 shadow-2xl"
-          >
-            <motion.p
-              className="text-2xl text-emerald-100 mb-6 font-medium"
-              animate={{ opacity: [0.8, 1, 0.8] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              "কৃষিই আমাদের ভবিষ্যৎ, কৃষিই আমাদের শক্তি"
-            </motion.p>
-
-            <div className="flex flex-wrap gap-4">
-              <motion.button
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-green-600 to-emerald-700 text-white font-semibold shadow-2xl hover:shadow-emerald-500/25 transition-all duration-300"
-              >
-                বিনিয়োগের সুযোগ
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 rounded-2xl border-2 border-emerald-400 text-emerald-300 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 transition-all duration-300 font-semibold"
-              >
-                আরও জানুন
-              </motion.button>
-            </div>
-          </motion.div>
-
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="grid grid-cols-3 gap-6"
-          >
-            {[
-              { value: "৫০০+", label: "শেয়ার সুযোগ" },
-              { value: "৫০০০+", label: "ফল গাছ" },
-              { value: "৩", label: "রিসোর্ট ও কটেজ" },
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                whileHover={{ scale: 1.05, y: -5 }}
-                className="bg-gradient-to-br from-emerald-800/40 to-green-900/40 backdrop-blur-sm p-6 rounded-2xl border border-emerald-500/20 text-center shadow-xl"
-              >
-                <motion.p
-                  className="text-3xl font-bold bg-gradient-to-r from-emerald-300 to-green-400 bg-clip-text text-transparent"
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    delay: index * 0.5,
-                  }}
-                >
-                  {stat.value}
-                </motion.p>
-                <p className="text-emerald-200 mt-2 font-medium">
-                  {stat.label}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Right Shape Carousel */}
-        <div>
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-16 lg:mt-0 w-full max-w-xl relative"
-          >
-            {/* Navigation Buttons */}
-            <div className="absolute top-1/2 -translate-y-1/2 z-20 w-full flex justify-between px-4">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={prevShape}
-                className="w-12 h-12 rounded-full bg-gradient-to-r from-emerald-600 to-green-700 text-white shadow-xl hover:shadow-emerald-500/25 flex items-center justify-center backdrop-blur-sm border border-emerald-400/30"
-              >
-                <ChevronLeft size={20} />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={nextShape}
-                className="w-12 h-12 rounded-full bg-gradient-to-r from-emerald-600 to-green-700 text-white shadow-xl hover:shadow-emerald-500/25 flex items-center justify-center backdrop-blur-sm border border-emerald-400/30"
-              >
-                <ChevronRight size={20} />
-              </motion.button>
-            </div>
-
-            {/* Shape Container */}
-            <div className="relative h-96 w-full">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentShape}
-                  initial={{ opacity: 0, scale: 0.8, rotateY: 90 }}
-                  animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, rotateY: -90 }}
-                  transition={{
-                    duration: 0.8,
-                    ease: [0.25, 0.46, 0.45, 0.94],
-                    rotateY: { duration: 0.6 },
-                  }}
-                  className="absolute inset-0"
-                  style={{ perspective: "1000px" }}
-                >
-                  {/* Background Glow */}
-                  <motion.div
-                    className={`absolute inset-0 bg-gradient-to-r ${shapes[currentShape].gradient} opacity-20 blur-3xl rounded-3xl`}
-                    animate={{
-                      scale: [1, 1.1, 1],
-                      opacity: [0.1, 0.3, 0.1],
-                    }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  />
-
-                  {/* Main Shape */}
-                  <motion.div
-                    className="relative h-full w-full overflow-hidden rounded-3xl shadow-2xl"
-                    style={{
-                      clipPath: shapes[currentShape].clipPath,
-                      background: `linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.2))`,
-                    }}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  >
-                    {/* Image */}
-                    <div
-                      className="absolute inset-0 bg-cover bg-center"
-                      style={{
-                        backgroundImage: `url(${shapes[currentShape].image})`,
-                      }}
-                    />
-
-                    {/* Overlay */}
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-br ${shapes[currentShape].gradient} opacity-70`}
-                    />
-
-                    {/* Title */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <motion.h3
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="text-2xl lg:text-3xl font-bold text-white text-center px-4 drop-shadow-lg"
-                      >
-                        {shapes[currentShape].title}
-                      </motion.h3>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Shape Indicators */}
-            <div className="flex justify-center mt-8 gap-3">
-              {shapes.map((_, index) => (
-                <motion.button
-                  key={index}
-                  onClick={() => setCurrentShape(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === currentShape
-                      ? "bg-emerald-400 shadow-lg shadow-emerald-400/50"
-                      : "bg-emerald-800 hover:bg-emerald-600"
-                  }`}
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
-                />
-              ))}
-            </div>
-
-            {/* Dividend Info Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1 }}
-              className="mt-8 bg-gradient-to-r from-emerald-900/60 to-green-800/60 backdrop-blur-xl p-6 rounded-3xl border border-emerald-500/30 shadow-2xl"
-            >
-              <div className="flex items-center">
-                <motion.div
-                  className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 flex items-center justify-center shadow-lg"
-                  animate={{ rotate: [0, 360] }}
-                  transition={{
-                    duration: 10,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                >
-                  <svg
-                    className="w-7 h-7 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </motion.div>
-                <div className="ml-6">
-                  <h4 className="text-xl font-bold text-emerald-100 mb-1">
-                    ২০২৭ সাল থেকে লভ্যাংশ
-                  </h4>
-                  <p className="text-emerald-300 font-medium">
-                    আজীবন মালিকানা ও আজীবন মুনাফা
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
+      ))}
+    </div>
   );
 }

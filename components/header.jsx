@@ -1,22 +1,15 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Menu, X, Sun, Moon } from "lucide-react";
-import Image from "next/image";
-import { useTheme } from "next-themes";
-import { useKBar } from "kbar";
-import { BorderBeam } from "./magicui/border-beam";
 import { useLanguageStore } from "@/store/useLanguageStore";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
-export function Header() {
-  const { query } = useKBar();
+function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const [theme, setTheme] = useState("light");
   const { language, toggleLanguage, t } = useLanguageStore();
 
-  // Scroll detect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -28,52 +21,59 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isMobileMenuOpen]);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  // Theme toggle with animation
+  // Theme Toggle with View Transition Animation
   const toggleTheme = (e) => {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    const x = e?.clientX ?? window.innerWidth / 2;
-    const y = e?.clientY ?? window.innerHeight / 2;
+    if (!document.startViewTransition) {
+      const newTheme = theme === "dark" ? "light" : "dark";
+      setTheme(newTheme);
+      document.documentElement.classList.toggle("dark");
+      return;
+    }
+
+    const x = e.clientX;
+    const y = e.clientY;
+
     document.documentElement.style.setProperty("--x", `${x}px`);
     document.documentElement.style.setProperty("--y", `${y}px`);
 
-    if (document.startViewTransition) {
-      document.startViewTransition(() => setTheme(nextTheme));
-    } else {
-      setTheme(nextTheme);
-    }
+    document.startViewTransition(() => {
+      const newTheme = theme === "dark" ? "light" : "dark";
+      setTheme(newTheme);
+      document.documentElement.classList.toggle("dark");
+    });
   };
 
-  const handleGetStarted = () => {
-    query.toggle();
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
     <header
       className={`fixed top-4 inset-x-4 z-[60] max-w-screen-xl mx-auto rounded-2xl h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8
-     transition-shadow transition-backdrop-blur duration-300
-    ${
-      isScrolled
-        ? "bg-emerald-50/90 dark:bg-gray-900/90 backdrop-blur-md border border-green-200 dark:border-green-900 shadow-lg"
-        : "bg-transparent border border-transparent shadow-none"
-    }`}
+     transition-all duration-500 backdrop-blur-xl
+    ${isScrolled
+          ? "bg-white/20 dark:bg-gray-900/20 border border-white/30 dark:border-gray-700/30 shadow-2xl shadow-emerald-500/10"
+          : "bg-white/10 dark:bg-gray-900/10 border border-white/20 dark:border-gray-700/20 shadow-lg"
+        }`}
     >
       {/* Logo Section */}
-      <a href="/" className="flex items-center space-x-2 animate-fade-in-up">
-        <Image
-          src="/Agro.jpg"
-          alt="Manzil Agro Logo"
-          width={40}
-          height={40}
-          className="rounded-full"
-        />
-        <span className="font-serif font-bold text-lg text-green-800 dark:text-green-200 tracking-wide">
+      <div className="flex items-center space-x-3 group">
+        <div className="relative">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 p-1 shadow-lg group-hover:shadow-xl transition-all duration-300">
+            <Image
+              src="/Agro.jpg"
+              alt="Manzil Agro Park Logo"
+              className="w-full h-full object-cover rounded-full"
+              width={50}
+              height={50}
+            />
+          </div>
+          <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 opacity-0 group-hover:opacity-20 blur-sm transition-all duration-300"></div>
+        </div>
+        <span className="font-serif font-bold text-xl text-gray-800 dark:text-white tracking-wide group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
           Manzil Agro Park
         </span>
-      </a>
+      </div>
 
       {/* Desktop Navigation */}
       <nav className="hidden lg:flex items-center space-x-8">
@@ -87,78 +87,55 @@ export function Header() {
           <a
             key={index}
             href={item.href}
-            className="relative font-sans text-foreground font-medium text-base sm:text-lg transition-all duration-300 group"
+            className="relative font-medium text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-300 group"
           >
             <span className="relative z-10">{t(item.key)}</span>
-            <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+            <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-emerald-400 to-green-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
           </a>
         ))}
       </nav>
 
       {/* Desktop Controls */}
       <div className="hidden lg:flex items-center space-x-3">
-        {/* Language toggle */}
-        <Button
-          variant="ghost"
+        <button
           onClick={toggleLanguage}
-          aria-label="Toggle language"
-          className="rounded-full h-9 px-4 bg-secondary/20 text-secondary-foreground hover:bg-secondary/30 font-bengali font-medium"
+          className="px-4 py-2 rounded-full bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm text-gray-700 dark:text-gray-300 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-300 font-medium border border-white/30 dark:border-gray-700/30"
         >
           {language === "en" ? "বাংলা" : "English"}
-        </Button>
+        </button>
 
-        {/* Theme toggle */}
-        <Button
-          variant="ghost"
-          size="icon"
+        <button
           onClick={toggleTheme}
-          aria-label="Toggle theme"
-          className="rounded-full h-9 w-9 bg-secondary/20 text-secondary-foreground hover:bg-secondary/30"
+          className="w-10 h-10 rounded-full bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm text-gray-700 dark:text-gray-300 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-300 border border-white/30 dark:border-gray-700/30 flex items-center justify-center"
         >
-          {theme === "dark" ? (
-            <Sun className="h-5 w-5 text-yellow-500" />
-          ) : (
-            <Moon className="h-5 w-5" />
-          )}
-        </Button>
+          {theme === "dark" ? "☀️" : "🌙"}
+        </button>
 
-        {/* Join Project */}
-        <Button
-          onClick={handleGetStarted}
-          className="rounded-full bg-primary text-primary-foreground font-medium px-6 py-2 shadow-md hover:scale-105 transition-transform"
-        >
+        <button className="px-6 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
           {t("nav.join")}
-        </Button>
+        </button>
       </div>
 
       {/* Mobile menu button */}
       <div className="lg:hidden flex items-center space-x-2">
-        <Button
-          variant="ghost"
-          size="icon"
+        <button
           onClick={toggleTheme}
-          aria-label="Toggle theme"
-          className="rounded-full h-9 w-9 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
+          className="w-9 h-9 rounded-full bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm text-gray-700 dark:text-gray-300 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-300 border border-white/30 dark:border-gray-700/30 flex items-center justify-center"
         >
-          {theme === "dark" ? (
-            <Sun className="h-5 w-5 text-yellow-500" />
-          ) : (
-            <Moon className="h-5 w-5 text-green-800" />
-          )}
-        </Button>
-        <Button variant="ghost" size="sm" onClick={toggleMobileMenu}>
-          {isMobileMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </Button>
+          {theme === "dark" ? "☀️" : "🌙"}
+        </button>
+        <button
+          onClick={toggleMobileMenu}
+          className="w-9 h-9 rounded-full bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm text-gray-700 dark:text-gray-300 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-300 border border-white/30 dark:border-gray-700/30 flex items-center justify-center"
+        >
+          {isMobileMenuOpen ? "✕" : "☰"}
+        </button>
       </div>
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 w-full px-4 sm:px-6 animate-fade-in-down">
-          <div className="py-4 space-y-4 bg-emerald-50 dark:bg-gray-900 border border-green-200 dark:border-green-900 rounded-xl shadow-xl">
+        <div className="lg:hidden absolute top-full left-0 w-full px-4 mt-2">
+          <div className="py-6 space-y-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-white/30 dark:border-gray-700/30 rounded-2xl shadow-2xl">
             {[
               { key: "nav.about", href: "#about" },
               { key: "nav.vision", href: "#vision" },
@@ -170,28 +147,21 @@ export function Header() {
                 key={index}
                 href={item.href}
                 onClick={toggleMobileMenu}
-                className="relative block px-4 py-2 text-green-800 dark:text-green-200 text-base font-medium transition-all duration-300 group"
+                className="block px-6 py-3 text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-all duration-300"
               >
-                <span className="relative z-10">{t(item.key)}</span>
-                <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-green-600 via-emerald-500 to-lime-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                {t(item.key)}
               </a>
             ))}
-
-            <div className="px-4 pt-2">
-              <Button
-                className="w-full rounded-full cursor-pointer bg-gradient-to-r from-green-600 to-emerald-700 text-white font-medium hover:scale-105 transition-transform"
-                onClick={() => {
-                  handleGetStarted();
-                  toggleMobileMenu();
-                }}
-              >
+            <div className="px-6 pt-2">
+              <button className="w-full py-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300">
                 {t("nav.join")}
-              </Button>
+              </button>
             </div>
           </div>
         </div>
       )}
-      <BorderBeam duration={10} size={120} />
     </header>
   );
 }
+
+export default Header;
